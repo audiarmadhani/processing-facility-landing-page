@@ -44,3 +44,4 @@ next-env.d.ts
 /media/footage/
 /media/btm-photos/
 /media/heqa-assets/
+!.env.example
