@@ -274,7 +274,7 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className={className}>
+    <div className={`min-w-0 ${className}`}>
       <label htmlFor={htmlFor} className="mb-1.5 flex items-baseline justify-between gap-2 text-sm font-medium">
         <span>{label}</span>
         {optional && <span className="text-xs font-normal text-forest/45">{optional}</span>}
