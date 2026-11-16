@@ -17,14 +17,39 @@ const pickVariant = (): Variant => (window.innerWidth < window.innerHeight * 0.9
 
 type Drawable = ImageBitmap | HTMLImageElement;
 
-function drawCover(ctx: CanvasRenderingContext2D, img: Drawable, W: number, H: number, dx = 0) {
+type Ctx = CanvasRenderingContext2D;
+
+/** Draws img to cover a W×H area, shifted by dx and zoomed by `zoom`. */
+function drawCover(ctx: Ctx, img: Drawable, W: number, H: number, dx = 0, zoom = 1) {
   const iw = img.width;
   const ih = img.height;
-  const s = Math.max(W / iw, H / ih);
+  const s = Math.max(W / iw, H / ih) * zoom;
   const dw = iw * s;
   const dh = ih * s;
   ctx.drawImage(img, (W - dw) / 2 + dx, (H - dh) / 2, dw, dh);
 }
+
+/**
+ * Horizontal motion blur: averages TAPS copies of img spread across `smear` px.
+ * Drawing copy k at alpha 1/(k+1) leaves every copy with equal weight
+ * (a true box blur, not fading ghost trails).
+ */
+const TAPS = 14;
+function motionBlur(ctx: Ctx, img: Drawable, W: number, H: number, dx: number, zoom: number, smear: number) {
+  // Copies are shifted up to smear/2 either way; zoom so every copy still covers
+  // the whole buffer (otherwise the background shows through as bands at the edge).
+  const z = zoom + smear / W;
+  ctx.globalAlpha = 1;
+  for (let k = 0; k < TAPS; k++) {
+    ctx.globalAlpha = 1 / (k + 1);
+    drawCover(ctx, img, W, H, dx + (k / (TAPS - 1) - 0.5) * smear, z);
+  }
+  ctx.globalAlpha = 1;
+}
+
+// Whip-pan tuning
+const PAN = 0.3; // how far (× width) each clip travels across the transition
+const SMEAR = 0.6; // peak blur length (× width)
 
 export default function FlyThrough({ hero, chapters }: Props) {
   const trackRef = useRef<HTMLElement>(null);
@@ -58,6 +83,11 @@ export default function FlyThrough({ hero, chapters }: Props) {
     let raf = 0;
     let visible = true;
     let activeChapter = -1;
+    // Low-res buffers for the transition blur (blur hides the resolution, and it's cheap).
+    const blurA = document.createElement("canvas");
+    const blurB = document.createElement("canvas");
+    const actx = blurA.getContext("2d")!;
+    const bctx = blurB.getContext("2d")!;
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -67,6 +97,10 @@ export default function FlyThrough({ hero, chapters }: Props) {
         canvas.width = W;
         canvas.height = H;
         ctx.imageSmoothingQuality = "high";
+        for (const b of [blurA, blurB]) {
+          b.width = Math.max(1, Math.round(W / 3));
+          b.height = Math.max(1, Math.round(H / 3));
+        }
       }
       const v = pickVariant();
       if (v !== variant) {
@@ -96,27 +130,46 @@ export default function FlyThrough({ hero, chapters }: Props) {
         if (img) drawCover(ctx, img, W, H);
         return;
       }
-      // Whip-pan: both frames slide left; each is smeared with fading copies
-      // trailing behind its motion to fake motion blur.
-      const e = easeInOutCubic(s.t);
-      const speed = Math.sin(Math.PI * s.t);
-      const step = speed * W * 0.022;
+      // Whip-pan. Like a fast camera turn: the outgoing shot accelerates left while
+      // smearing, the incoming shot is cross-faded in at peak blur and decelerates
+      // into place. Both always fill the screen, so there is never a visible seam.
+      const t = s.t;
+      const e = easeInOutCubic(t);
+      const v = Math.sin(Math.PI * t); // 0 → 1 → 0: speed of the "camera"
+      const mix = smoothstep(0.4, 0.6, t); // incoming opacity
       const out = store.get(s.fromFrame);
       const inn = store.get(s.toFrame);
-      const layers: [Drawable | null, number][] = [
-        [out, -e * W],
-        [inn, (1 - e) * W],
-      ];
-      for (const [img, x] of layers) {
-        if (!img) continue;
-        ctx.globalAlpha = 1;
-        drawCover(ctx, img, W, H, x);
-        for (let k = 1; k <= 8; k++) {
-          ctx.globalAlpha = 0.28 * (1 - k / 9) * speed;
-          drawCover(ctx, img, W, H, x + k * step);
-        }
+      const outDx = -e * PAN * W;
+      const inDx = (1 - e) * PAN * W;
+      // Zoom just enough that the shifted image still covers the frame.
+      const outZoom = 1 + (2 * Math.abs(outDx)) / W + 0.04 * v;
+      const inZoom = 1 + (2 * Math.abs(inDx)) / W + 0.04 * v;
+
+      // 1. Sharp layers (what you see at the very start and end).
+      if (out) drawCover(ctx, out, W, H, outDx, outZoom);
+      if (inn && mix > 0) {
+        ctx.globalAlpha = mix;
+        drawCover(ctx, inn, W, H, inDx, inZoom);
       }
-      ctx.globalAlpha = 0.35 * speed;
+
+      // 2. Motion-blurred layers on top, fading in as the "camera" speeds up.
+      const blurAmount = smoothstep(0, 0.55, v);
+      if (blurAmount > 0.01) {
+        const bw = blurA.width;
+        const bh = blurA.height;
+        const k = bw / W;
+        const smear = v * SMEAR * bw;
+        if (out) motionBlur(actx, out, bw, bh, outDx * k, outZoom, smear);
+        if (inn) motionBlur(bctx, inn, bw, bh, inDx * k, inZoom, smear);
+        ctx.globalAlpha = blurAmount;
+        if (out) ctx.drawImage(blurA, 0, 0, W, H);
+        ctx.globalAlpha = blurAmount * mix;
+        if (inn) ctx.drawImage(blurB, 0, 0, W, H);
+      }
+
+      // 3. A whisper of darkening at peak speed keeps captions readable.
+      ctx.globalAlpha = 0.06 * v;
+      ctx.fillStyle = "#00291b";
       ctx.fillRect(0, 0, W, H);
       ctx.globalAlpha = 1;
     };

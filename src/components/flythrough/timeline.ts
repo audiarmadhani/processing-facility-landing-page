@@ -5,7 +5,7 @@
 
 import type { FramesManifest } from "./manifest";
 
-export const TRANSITION_UNITS = 16;
+export const TRANSITION_UNITS = 24;
 
 export type Segment =
   | { kind: "clip"; clip: number; start: number; length: number; globalStart: number; frames: number }
