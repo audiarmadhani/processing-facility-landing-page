@@ -204,7 +204,11 @@ export default function FlyThrough({ hero, chapters }: Props) {
         style={{ height: `calc(${units} * var(--ft-unit) + 100lvh)` }}
         aria-label={hero.scroll}
       >
-        <div className="sticky top-0 h-[100lvh] w-full overflow-hidden bg-forest">
+        {/* No background colour here on purpose: iOS 26 Safari tints its status bar and
+            toolbar with the background of full-width sticky/fixed elements at the screen
+            edges. Transparent lets the footage show through instead. The canvas and
+            poster paint the whole area anyway. */}
+        <div className="sticky top-0 h-[100lvh] w-full overflow-hidden">
           <picture>
             <source media="(max-aspect-ratio: 9/10)" srcSet={posterUrl(firstClip, "m")} />
             <img

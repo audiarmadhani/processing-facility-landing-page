@@ -15,8 +15,10 @@ export default function StickyCta({ label }: { label: string }) {
   return (
     <a
       href="#register"
-      className={`fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 rounded-full bg-cream py-4 text-center font-medium text-forest shadow-xl shadow-black/30 transition duration-300 sm:hidden ${
-        show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
+      // Kept well under 80% of the screen width: iOS 26 Safari paints its toolbar with the
+      // background of wider fixed elements near the bottom edge (it turned the bar cream).
+      className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 z-40 -translate-x-1/2 whitespace-nowrap rounded-full bg-cream px-7 py-3.5 text-center font-medium text-forest shadow-xl shadow-black/30 transition duration-300 sm:hidden ${
+        show ? "opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
     >
       {label}
