@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Raw media (large). Encoded frames in public/frames ARE committed.
+/media/footage/
+/media/btm-photos/
+/media/heqa-assets/

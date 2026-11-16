@@ -1,0 +1,196 @@
+// All visitor-facing copy. Japanese lives in ja.ts and must mirror this shape.
+// Facts marked TODO should be confirmed by the HEQA team before launch.
+
+const en = {
+  meta: {
+    title: "Visit HEQA — Processing Station, North Bali",
+    description:
+      "Plan your visit to the HEQA coffee processing station in Singaraja, Bali. Fly through the station, read the visitor guidelines and register in a minute.",
+  },
+  nav: {
+    register: "Register your visit",
+    checkIn: "Check in",
+    skip: "Skip to registration",
+    language: "Language",
+  },
+  hero: {
+    eyebrow: "Processing station · Singaraja, North Bali",
+    title: "Not magic,\nbut microbes.",
+    lead: "Welcome to the HEQA station — where Bali’s coffee cherries become green coffee for roasters around the world.",
+    scroll: "Scroll to fly in",
+  },
+  chapters: [
+    {
+      id: "arrival",
+      kicker: "Arrival",
+      title: "Welcome to the station",
+      body: "Our station sits in Singaraja on Bali’s north coast. Everything here exists to do one thing: bring out what’s already in the cherry.",
+    },
+    {
+      id: "cherry",
+      kicker: "Cherry",
+      title: "Picked ripe, on the slopes",
+      body: "We work with smallholder farmers across North Bali. Cherries are picked at peak ripeness and reach us the same day.",
+    },
+    {
+      id: "sorting",
+      kicker: "Sorting",
+      title: "Every cherry, by hand",
+      body: "Each intake is floated and hand-sorted. Under-ripe, over-ripe and damaged cherries come out before anything else happens.",
+    },
+    {
+      id: "fermentation",
+      kicker: "Fermentation",
+      title: "Where flavour is decided",
+      body: "In controlled fermentation we guide the yeasts and bacteria that shape the cup — measured, logged and repeatable.",
+    },
+    {
+      id: "drying",
+      kicker: "Drying",
+      title: "Slow drying, under cover",
+      body: "Lots rest on raised beds inside our drying houses, turned by hand for days or weeks until they reach target moisture.",
+    },
+    {
+      id: "green",
+      kicker: "Green coffee",
+      title: "Graded, cupped, ready",
+      body: "Dried coffee is hulled, graded and cupped in our lab before it’s packed for roasters around the world.",
+    },
+  ],
+  guide: {
+    eyebrow: "Before you arrive",
+    title: "A few things to know",
+    lead: "We’re a working processing station, so a little preparation keeps you, our team and the coffee safe.",
+    items: [
+      {
+        icon: "pin",
+        title: "Getting here",
+        body: "We’re in Singaraja, Buleleng, North Bali — about 2.5 hours from the airport. Free parking is inside the main gate; reception is on your left.",
+      },
+      {
+        icon: "boot",
+        title: "What to wear",
+        body: "Closed-toe shoes are required in all processing areas. Long trousers are recommended. Hairnets and coats are provided where needed.",
+      },
+      {
+        icon: "hand",
+        title: "Hygiene",
+        body: "Please wash your hands at the entrance. No food or drink beyond the visitor lounge, and skip strong perfume if you’re joining a cupping.",
+      },
+      {
+        icon: "camera",
+        title: "Photography",
+        body: "Photos are welcome in open areas. Please ask your host before photographing the lab, fermentation records or our team.",
+      },
+      {
+        icon: "shield",
+        title: "Safety",
+        body: "Stay with your host and on marked walkways. Hullers and sorters can start without warning. The assembly point is at the main gate.",
+      },
+      {
+        icon: "heart",
+        title: "Feeling unwell?",
+        body: "If you’ve had a fever or stomach illness in the last 48 hours, please let us know — we’ll happily reschedule.",
+      },
+    ],
+  },
+  form: {
+    eyebrow: "Registration",
+    title: "Register your visit",
+    lead: "Takes about a minute. You’ll get a visit code to show at reception.",
+    checkInLead: "Welcome! Tell us who you are and you’ll be checked in straight away.",
+    steps: ["About you", "Your visit", "Agreements"],
+    next: "Continue",
+    back: "Back",
+    submit: "Register visit",
+    submitCheckIn: "Check me in",
+    submitting: "Sending…",
+    optional: "optional",
+    fields: {
+      full_name: "Full name",
+      company: "Company or organisation",
+      email: "Email",
+      phone: "Phone / WhatsApp",
+      phoneHint: "Include your country code, e.g. +62",
+      country: "Country",
+      visit_date: "Date of visit",
+      arrival_time: "Expected arrival",
+      party_size: "Number of people",
+      party_sizeHint: "Including you",
+      companions: "Names of others in your group",
+      host_name: "Who are you visiting?",
+      host_nameHint: "Your contact at HEQA, if you have one",
+      purpose: "Purpose of visit",
+      vehicle_plate: "Vehicle plate",
+      notes: "Anything we should know?",
+      notesHint: "Accessibility needs, dietary requirements, samples you’d like to cup…",
+    },
+    arrivalTimes: {
+      morning: "Morning (08:00–11:00)",
+      midday: "Midday (11:00–14:00)",
+      afternoon: "Afternoon (14:00–17:00)",
+      unsure: "Not sure yet",
+    },
+    purposes: {
+      buyer: "Green coffee buyer / roaster",
+      cupping: "Cupping or sample review",
+      tour: "Station tour",
+      producer: "Farmer or producer",
+      supplier: "Supplier or contractor",
+      research: "Research or education",
+      media: "Media",
+      other: "Other",
+    },
+    acks: {
+      ack_safety: "I’ve read the safety guidelines and will stay with my host in processing areas.",
+      ack_hygiene: "I’ll follow the hygiene rules, including closed-toe shoes and hand washing.",
+      ack_photo: "I’ll ask before photographing the lab, records or people.",
+      health_ok: "I (and my group) have not had a fever or stomach illness in the last 48 hours.",
+      consent_data:
+        "I agree that HEQA may store these details to manage my visit and site safety. They’re kept for up to 12 months and never sold.",
+      marketing_ok: "Send me occasional harvest updates from HEQA.",
+    },
+    errors: {
+      required: "Required",
+      email: "Enter a valid email",
+      phone: "Enter a valid phone number",
+      date: "Choose a date from today onwards",
+      ack: "Please confirm to continue",
+      generic: "Something went wrong. Please try again, or contact reception.",
+      rate_limited: "Too many registrations from this connection. Please wait a few minutes.",
+      not_found: "We couldn’t find that code with that email. Check both and try again.",
+    },
+  },
+  done: {
+    title: "You’re registered",
+    titleCheckedIn: "You’re checked in",
+    lead: "Show this code at reception. We’ve saved it for you below.",
+    leadCheckedIn: "Welcome to HEQA, {name}. Reception has been notified — please wait in the visitor lounge.",
+    code: "Visit code",
+    date: "Date",
+    save: "Save to photos",
+    another: "Register someone else",
+    emailNote: "A copy has been sent to your email.",
+  },
+  checkIn: {
+    title: "Check in",
+    tabRegistered: "I’ve registered",
+    tabNew: "I’m new here",
+    ref: "Visit code",
+    refHint: "Starts with HQ-",
+    email: "Email you registered with",
+    submit: "Check in",
+    backToSite: "See the station",
+  },
+  footer: {
+    station: "HEQA Processing Station",
+    address: "Singaraja, Buleleng, Bali, Indonesia",
+    reception: "Reception",
+    privacy:
+      "Visitor details are used only to manage visits and site safety, kept for up to 12 months, and never sold.",
+    family: "Part of the BTM Coffee and Kopi Fabriek family.",
+  },
+};
+
+export default en;
+export type Dict = typeof en;

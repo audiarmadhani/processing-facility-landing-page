@@ -1,0 +1,79 @@
+{
+  "version": "v20261116063422",
+  "base": "/frames/v20261116063422",
+  "previewEvery": 4,
+  "clips": [
+    {
+      "id": "arrival",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    },
+    {
+      "id": "cherry",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    },
+    {
+      "id": "sorting",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    },
+    {
+      "id": "fermentation",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    },
+    {
+      "id": "drying",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    },
+    {
+      "id": "green",
+      "frames": 72,
+      "desktop": {
+        "w": 1920,
+        "h": 1080
+      },
+      "mobile": {
+        "w": 608,
+        "h": 1080
+      }
+    }
+  ]
+}
