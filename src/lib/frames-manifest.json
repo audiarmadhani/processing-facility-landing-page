@@ -1,78 +1,78 @@
 {
-  "version": "v20261116063422",
-  "base": "/frames/v20261116063422",
+  "version": "v20261116082701",
+  "base": "/frames/v20261116082701",
   "previewEvery": 4,
   "clips": [
     {
-      "id": "arrival",
-      "frames": 72,
+      "id": "highlands",
+      "frames": 90,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     },
     {
-      "id": "cherry",
-      "frames": 72,
+      "id": "farms",
+      "frames": 84,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     },
     {
-      "id": "sorting",
-      "frames": 72,
+      "id": "intake",
+      "frames": 91,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     },
     {
-      "id": "fermentation",
-      "frames": 72,
+      "id": "patio",
+      "frames": 88,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     },
     {
-      "id": "drying",
-      "frames": 72,
+      "id": "drying-houses",
+      "frames": 108,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     },
     {
-      "id": "green",
-      "frames": 72,
+      "id": "station",
+      "frames": 83,
       "desktop": {
         "w": 1920,
         "h": 1080
       },
       "mobile": {
-        "w": 608,
-        "h": 1080
+        "w": 720,
+        "h": 1600
       }
     }
   ]

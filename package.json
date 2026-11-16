@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "frames": "node scripts/build-frames.mjs",
-    "placeholder-footage": "node scripts/make-placeholder-footage.mjs"
+    "frames": "node scripts/build-frames.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",

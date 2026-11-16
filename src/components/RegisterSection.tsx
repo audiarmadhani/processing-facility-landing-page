@@ -13,6 +13,15 @@ export default function RegisterSection({ lang, t }: { lang: Locale; t: Dict }) 
           <p className="eyebrow text-cream/60">{t.form.eyebrow}</p>
           <h2 className="mt-4 font-display text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] tracking-[-0.025em]">{t.form.title}</h2>
           <p className="mt-6 max-w-md text-lg text-cream/75">{t.form.lead}</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/team.webp"
+            alt={t.form.teamAlt}
+            width={1200}
+            height={1012}
+            loading="lazy"
+            className="mt-10 hidden aspect-[6/5] w-full max-w-md rounded-[1.25rem] object-cover lg:block"
+          />
           <p className="mt-10 text-sm text-cream/55">
             <a href={`/${lang}/check-in`} className="underline decoration-cream/30 underline-offset-4 hover:decoration-cream">
               {t.nav.checkIn} →

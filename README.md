@@ -11,9 +11,9 @@ Built with Next.js 15 (App Router) + Tailwind v4, Supabase for storage, and opti
 
 Scrubbing a `<video>` on scroll is jerky because browsers can't seek frame-accurately on every scroll tick. Instead:
 
-1. **Build time** (`npm run frames`): ffmpeg samples each clip in `media/footage/` into frames, and sharp encodes them as AVIF:
-   - `d/` 1920×1080 desktop frames (~60–120 KB each)
-   - `m/` 864×1536 phone frames, a 9:16 crop around `focusX`
+1. **Build time** (`npm run frames`): ffmpeg trims and samples each clip in `media/footage/`, and sharp encodes the frames as AVIF:
+   - `d/` 1920×1080 desktop frames, from the 16:9 file
+   - `m/` 720×1600 phone frames, from the vertical (20:9) file
    - `p/`, `pm/` tiny previews of every 4th frame
    - `poster-*.webp` for first paint and the reduced-motion fallback
 
@@ -24,20 +24,27 @@ Scrubbing a `<video>` on scroll is jerky because browsers can't seek frame-accur
    - `FlyThrough.tsx` draws to a single `<canvas>` with eased smoothing, whip-pan motion-blur transitions between clips, and captions/progress driven directly in the animation loop (no React re-renders).
    - With `prefers-reduced-motion` or no AVIF support, a static chapter grid is shown instead.
 
-## Swapping in the real drone footage
+## Footage
 
-1. Put the clips in `media/footage/` named as in `scripts/clips.config.mjs` (`01-arrival.mp4` … `06-green.mp4`). Edit that file to add, remove or reorder clips, change the sampled `fps`, or set `focusX` (where the phone crop is centred, 0–1).
-2. Make sure `src/i18n/en.ts` and `ja.ts` have one chapter per clip, in the same order.
-3. Run `npm run frames` (or `npm run frames -- drying` to re-encode one clip), then commit `public/frames` and `src/lib/frames-manifest.json`.
+The drone footage lives in the HEQA Google Drive. The `16:9` folder has the landscape versions and the `20:9` folder has the vertical versions; both are numbered 1–13. The site uses these six, in this order:
 
-**Footage tips:**
-- 4K or 1080p at 24–30 fps, no in-camera effects.
-- Slow, steady, continuous moves (push-ins, orbits, fly-overs) with no cuts inside a clip.
-- 5–10 s per clip. Longer clips mean more frames to download, so lower `fps` to compensate.
-- Keep the subject near the centre so the 9:16 phone crop still works.
-- Budget: ~70–120 frames per clip at the default 24 fps is a good balance.
+| Chapter | Drive # | Trim |
+|---|---|---|
+| highlands (hero) | 6 | 0–6 s |
+| farms | 7 | 2–9 s |
+| intake | 12 | 3.8–7.6 s |
+| patio | 9 | 3–11 s |
+| drying-houses | 1 | 6–16.8 s |
+| station | 5 | 1–14.9 s |
 
-`npm run placeholder-footage` regenerates the stand-in push-in clips from the stills in `media/stills/`.
+The still beside the registration form (`public/images/team.webp`) is from #10.
+
+To change clips:
+
+1. Download them into `media/footage/` (not committed, ~500 MB) using the names in `scripts/clips.config.mjs`. That file also holds each clip's trim and sampled `fps`; aim for ~90–110 frames per clip.
+2. Keep one chapter per clip, in the same order, in `src/i18n/en.ts` and `ja.ts`.
+3. Run `npm run frames` (or `npm run frames -- patio` to re-encode one clip). A full run takes roughly 30–40 minutes.
+4. Commit `public/frames` and `src/lib/frames-manifest.json`.
 
 ## Data
 
@@ -81,7 +88,7 @@ npm run dev
 
 ## Before launch: content to confirm
 
-- Chapter copy in `src/i18n/en.ts` describes the process in general terms. Check the claims, e.g. same-day cherry delivery and drying in "days or weeks".
+- Chapter copy in `src/i18n/en.ts`: check the claims, e.g. Kintamani highlands, shade-grown, drying for "days or weeks".
 - Visitor rules (shoes, photography, assembly point) and the "2.5 h from the airport" line.
 - Japanese copy (`ja.ts`) is a draft and needs a native review.
 - Street address / Google Maps link in the footer.
