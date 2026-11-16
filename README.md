@@ -21,7 +21,8 @@ Scrubbing a `<video>` on scroll is jerky because browsers can't seek frame-accur
 2. **In the browser** (`src/components/flythrough/`):
    - `frame-store.ts` loads full frames only in a window around the current position (40 ahead, 16 behind; the window flips with scroll direction) and releases frames that leave it. It keeps at most 6 requests in flight. All previews stay in memory so fast scrolling always has something to draw.
    - `timeline.ts` maps scroll progress to clip/frame or to a transition between clips.
-   - `FlyThrough.tsx` draws to a single `<canvas>` with eased smoothing, whip-pan motion-blur transitions between clips, and captions/progress driven directly in the animation loop (no React re-renders).
+   - `FlyThrough.tsx` draws to a single `<canvas>` with eased smoothing, transitions between clips, and captions/progress driven directly in the animation loop (no React re-renders).
+   - **Transitions continue the camera move.** `scripts/analyze-motion.mjs` (run automatically by `npm run frames`, or alone with `npm run motion`) measures each clip's motion (pan direction and push-in/pull-back) at its start and end, separately for the desktop and phone versions, and stores it in the manifest. The outgoing shot carries on its own move, accelerating into a true motion blur (sideways streaks for pans, radial for zooms). The next shot arrives moving the same way and settles. If a shot ends almost still, the direction comes from how the next shot starts. Exposed edges are filled with mirrored copies, so there's no artificial zoom. Tuning constants (`TRAVEL`, `ZOOM_TRAVEL`, `SHUTTER`) are at the top of `FlyThrough.tsx`.
    - With `prefers-reduced-motion` or no AVIF support, a static chapter grid is shown instead.
 
 ## Footage
