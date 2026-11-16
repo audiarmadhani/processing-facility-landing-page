@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, DM_Sans, Noto_Sans_JP } from "next/font/google";
 import { notFound } from "next/navigation";
 import { getDict, isLocale, locales } from "@/i18n/config";
+import { siteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", weight: ["400", "500", "600"] });
@@ -17,9 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const t = getDict(lang);
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   return {
-    metadataBase: new URL(site),
+    metadataBase: siteUrl(),
     title: t.meta.title,
     description: t.meta.description,
     alternates: { canonical: `/${lang}`, languages: { en: "/en", ja: "/ja" } },
