@@ -27,18 +27,20 @@ Scrubbing a `<video>` on scroll is jerky because browsers can't seek frame-accur
 
 ## Footage
 
-The drone footage lives in the HEQA Google Drive. The `16:9` folder has the landscape versions and the `20:9` folder has the vertical versions; both are numbered 1–13. The site uses these six, in this order:
+The footage lives in the HEQA Google Drive. The `16:9` folder has the landscape versions and the `20:9` folder has the vertical versions. Up to #15 the two folders' numbers match; from #16 on, the vertical folder is numbered one lower (vertical #16 = landscape #17 … vertical #30 = landscape #31), and landscape #16 has no vertical version. The site uses these eight, in this order:
 
-| Chapter | Drive # | Trim |
-|---|---|---|
-| highlands (hero) | 6 | 0–6 s |
-| farms | 7 | 2–9 s |
-| intake | 12 | 3.8–7.6 s |
-| patio | 9 | 3–11 s |
-| drying-houses | 1 | 6–16.8 s |
-| station | 5 | 1–14.9 s |
+| Chapter | Landscape # | Vertical # | Trim |
+|---|---|---|---|
+| highlands (hero) | 6 | 6 | 0–6 s |
+| intake | 30 | 29 | 5.5–12.8 s |
+| fermentation | 28 | 27 | 2.5–11 s |
+| control | 27 | 26 | 0.3–4.2 s |
+| drying-houses | 1 | 1 | 6–16.8 s |
+| drying-room | 17 | 16 | full (2.3 s) |
+| dry-mill | 20 | 19 | 0–3 s |
+| station | 5 | 5 | 1–14.9 s |
 
-The still beside the registration form (`public/images/team.webp`) is from #10.
+The still beside the registration form (`public/images/team.webp`) is from landscape #10.
 
 To change clips:
 
@@ -89,7 +91,7 @@ npm run dev
 
 ## Before launch: content to confirm
 
-- Chapter copy in `src/i18n/en.ts`: check the claims, e.g. Kintamani highlands, shade-grown, drying for "days or weeks".
+- Chapter copy in `src/i18n/en.ts`: check the claims, e.g. Kintamani highlands, sealed fermentation tanks with airlocks, a calibrated/monitored line, racked drying rooms, hulling and grading in-house.
 - Visitor rules (shoes, photography, assembly point) and the "2.5 h from the airport" line.
 - Japanese copy (`ja.ts`) is a draft and needs a native review.
 - Street address / Google Maps link in the footer.

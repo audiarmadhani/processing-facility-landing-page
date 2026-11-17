@@ -27,22 +27,22 @@ const en = {
       body: "Our partner farms sit on the volcanic slopes of Bali’s Kintamani highlands. Rich soil, cool nights and steady rain mean slow-ripening, sweet cherry.",
     },
     {
-      id: "farms",
-      kicker: "The farms",
-      title: "Grown by smallholders",
-      body: "We work with smallholder farmers who grow coffee among shade trees and pick only ripe cherry, by hand.",
-    },
-    {
       id: "intake",
       kicker: "Intake",
       title: "Every lot starts here",
-      body: "Fresh cherry arrives at the station, is weighed and logged, and goes straight into processing — where our controlled fermentations begin.",
+      body: "Ripe cherry arrives from our partner farms, is weighed and logged, and goes straight into processing.",
     },
     {
-      id: "patio",
-      kicker: "Sun drying",
-      title: "Turned by hand",
-      body: "On the patio, coffee is spread thin and raked through the day so every bean dries evenly.",
+      id: "fermentation",
+      kicker: "Fermentation",
+      title: "Where flavour is decided",
+      body: "Sealed tanks fitted with airlocks let us run controlled fermentations, measured, logged and repeatable lot after lot.",
+    },
+    {
+      id: "control",
+      kicker: "Precision",
+      title: "Measured at every step",
+      body: "Our processing line is calibrated and monitored, so each lot is handled exactly to its recipe.",
     },
     {
       id: "drying-houses",
@@ -51,10 +51,22 @@ const en = {
       body: "Our drying houses shelter each lot from the rain while it rests on raised beds, for days or weeks, until it reaches target moisture.",
     },
     {
+      id: "drying-room",
+      kicker: "Drying rooms",
+      title: "Controlled, whatever the weather",
+      body: "Racked drying rooms let us keep drying on our own terms, so a rainy week never decides how a lot turns out.",
+    },
+    {
+      id: "dry-mill",
+      kicker: "Dry mill",
+      title: "Hulled and graded on site",
+      body: "Dried coffee is hulled, sorted and graded on our own machines before it’s bagged for export.",
+    },
+    {
       id: "station",
       kicker: "The station",
       title: "Ready for the world",
-      body: "From here, dried coffee is hulled, graded and cupped before it leaves for roasters around the world. Come and see it for yourself.",
+      body: "From here, our coffee leaves for roasters around the world. Come and see it for yourself.",
     },
   ],
   guide: {
