@@ -42,7 +42,7 @@ const en = {
       id: "fermentation",
       kicker: "Fermentation",
       title: "Where flavour is decided",
-      body: "Sealed tanks fitted with airlocks let us run controlled fermentations, measured, logged and repeatable lot after lot.",
+      body: "Our fermentation tanks are the heart of the station. Every fermentation is controlled, logged and repeatable, lot after lot.",
     },
     {
       id: "control",
@@ -61,6 +61,12 @@ const en = {
       kicker: "Drying rooms",
       title: "Controlled, whatever the weather",
       body: "Racked drying rooms let us keep drying on our own terms, so a rainy week never decides how a lot turns out.",
+    },
+    {
+      id: "dry-mill",
+      kicker: "Dry mill",
+      title: "Hulled on site",
+      body: "Dried coffee goes through our own huller, then is sorted and graded before it’s bagged for export.",
     },
     {
       id: "station",
