@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import type { Dict } from "@/i18n/en";
 import { FrameStore, type Variant } from "./frame-store";
 import { manifest, posterUrl, type Motion } from "./manifest";
+import { attachChapterSnap } from "./snap";
 import { buildTimeline, sample, type Sample } from "./timeline";
 
 type Props = { hero: Dict["hero"]; chapters: Dict["chapters"] };
@@ -291,6 +292,29 @@ export default function FlyThrough({ hero, chapters }: Props) {
       canvas.dataset.ready = "1";
     };
 
+    // Chapter stops (document scroll positions): the hero, each chapter where its
+    // caption is fully on screen, then the section after the fly-through.
+    const trackTop = () => track.getBoundingClientRect().top + window.scrollY;
+    const afterTrack = () => {
+      const next = track.parentElement?.querySelector<HTMLElement>("#guide");
+      return next ? next.getBoundingClientRect().top + window.scrollY : trackTop() + track.offsetHeight;
+    };
+    const stops = () => {
+      const top = trackTop();
+      const span = track.offsetHeight - window.innerHeight;
+      const ys = [top];
+      clipSegments.forEach((seg, i) => {
+        const restAt = i === 0 ? 0.55 : 0.5; // fraction into the clip where its caption is fully in
+        ys.push(Math.round(top + ((seg.start + seg.length * restAt) / units) * span));
+      });
+      ys.push(Math.round(afterTrack()));
+      return ys;
+    };
+    const detachSnap = attachChapterSnap({
+      stops,
+      inZone: (y) => y >= trackTop() - 4 && y <= afterTrack() + 4,
+    });
+
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     const io = new IntersectionObserver(([e]) => {
@@ -303,6 +327,7 @@ export default function FlyThrough({ hero, chapters }: Props) {
 
     return () => {
       cancelAnimationFrame(raf);
+      detachSnap();
       ro.disconnect();
       io.disconnect();
       store.destroy();
