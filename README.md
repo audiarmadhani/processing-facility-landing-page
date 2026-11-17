@@ -33,11 +33,11 @@ The footage lives in the HEQA Google Drive. The `16:9` folder has the landscape 
 |---|---|---|---|
 | highlands (hero) | 6 | 6 | 0–6 s |
 | intake | 30 | 29 | 5.5–12.8 s |
+| pulping | 20 | 19 | 0–3 s |
 | fermentation | 28 | 27 | 2.5–11 s |
 | control | 27 | 26 | 0.3–4.2 s |
 | drying-houses | 1 | 1 | 6–16.8 s |
 | drying-room | 17 | 16 | full (2.3 s) |
-| dry-mill | 20 | 19 | 0–3 s |
 | station | 5 | 5 | 1–14.9 s |
 
 The still beside the registration form (`public/images/team.webp`) is from landscape #10.
@@ -91,7 +91,7 @@ npm run dev
 
 ## Before launch: content to confirm
 
-- Chapter copy in `src/i18n/en.ts`: check the claims, e.g. Kintamani highlands, sealed fermentation tanks with airlocks, a calibrated/monitored line, racked drying rooms, hulling and grading in-house.
+- Chapter copy in `src/i18n/en.ts`: check the claims, e.g. Kintamani highlands, sealed fermentation tanks with airlocks, a calibrated/monitored line, racked drying rooms, and what the pulpers do.
 - Visitor rules (shoes, photography, assembly point) and the "2.5 h from the airport" line.
 - Japanese copy (`ja.ts`) is a draft and needs a native review.
 - Street address / Google Maps link in the footer.

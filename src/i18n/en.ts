@@ -33,6 +33,12 @@ const en = {
       body: "Ripe cherry arrives from our partner farms, is weighed and logged, and goes straight into processing.",
     },
     {
+      id: "pulping",
+      kicker: "Pulping",
+      title: "From cherry to parchment",
+      body: "Our pulpers strip the skin from each cherry, leaving the seeds in their sweet mucilage, ready for fermentation.",
+    },
+    {
       id: "fermentation",
       kicker: "Fermentation",
       title: "Where flavour is decided",
@@ -55,12 +61,6 @@ const en = {
       kicker: "Drying rooms",
       title: "Controlled, whatever the weather",
       body: "Racked drying rooms let us keep drying on our own terms, so a rainy week never decides how a lot turns out.",
-    },
-    {
-      id: "dry-mill",
-      kicker: "Dry mill",
-      title: "Hulled and graded on site",
-      body: "Dried coffee is hulled, sorted and graded on our own machines before it’s bagged for export.",
     },
     {
       id: "station",
