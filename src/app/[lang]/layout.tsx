@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, DM_Sans, Noto_Sans_JP } from "next/font/google";
+import { Archivo, DM_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { getDict, isLocale, locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/site-url";
@@ -7,7 +7,6 @@ import "../globals.css";
 
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", weight: ["400", "500", "600"] });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
-const notoJp = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-noto-jp", weight: ["400", "500", "700"], preload: false });
 
 const AVIF_TEST =
   "data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAG1pZjFhdmlmbWlhZgAAANZtZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAACJpbG9jAAAAAERAAAEAAQAAAAAA+gABAAAAAAAAAB0AAAAjaWluZgAAAAAAAQAAABVpbmZlAgAAAAABAABhdjAxAAAAAA5waXRtAAAAAAABAAAAVmlwcnAAAAA4aXBjbwAAAAxhdjFDgSACAAAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAABZpcG1hAAAAAAAAAAEAAQOBAgMAAAAlbWRhdBIACgc4AAaQENBpMhAZQmMEwAA0AACQQM6Xt10S";
@@ -32,7 +31,8 @@ export const viewport: Viewport = { themeColor: "#00291b", width: "device-width"
 export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const fonts = [archivo.variable, dmSans.variable, lang === "ja" ? notoJp.variable : ""].join(" ");
+  // Japanese uses the system font (Hiragino / Noto / Yu Gothic): no web-font download.
+  const fonts = [archivo.variable, dmSans.variable].join(" ");
   return (
     <html lang={lang} className={fonts}>
       <head>

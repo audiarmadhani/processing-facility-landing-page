@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import type { Dict } from "@/i18n/en";
-import { FrameStore, type Variant } from "./frame-store";
+import { FrameStore, type Drawable, type Variant } from "./frame-store";
 import { manifest, posterUrl, type Motion } from "./manifest";
 import { attachChapterSnap } from "./snap";
 import { buildTimeline, sample, type Sample } from "./timeline";
@@ -15,7 +15,6 @@ const smoothstep = (a: number, b: number, x: number) => {
 };
 const pickVariant = (): Variant => (window.innerWidth < window.innerHeight * 0.9 ? "m" : "d");
 
-type Drawable = ImageBitmap | HTMLImageElement;
 
 type Ctx = CanvasRenderingContext2D;
 type Source = Drawable | HTMLCanvasElement;
@@ -119,6 +118,7 @@ export default function FlyThrough({ hero, chapters }: Props) {
     const ctx = canvas.getContext("2d", { alpha: false })!;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const debug = new URLSearchParams(location.search).has("debug");
     let variant = pickVariant();
     let dirty = true;
     let store = new FrameStore(manifest, variant, () => (dirty = true));
@@ -163,9 +163,16 @@ export default function FlyThrough({ hero, chapters }: Props) {
     };
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = Math.round(canvas.clientWidth * dpr);
-      H = Math.round(canvas.clientHeight * dpr);
+      const v = pickVariant();
+      // Never draw more pixels than the footage has: with cover-fit, a backing
+      // store larger than ~1.1× the frame resolution only costs fill-rate.
+      const fw = v === "d" ? manifest.clips[0].desktop.w : manifest.clips[0].mobile.w;
+      const fh = v === "d" ? manifest.clips[0].desktop.h : manifest.clips[0].mobile.h;
+      const cssW = Math.max(1, canvas.clientWidth);
+      const cssH = Math.max(1, canvas.clientHeight);
+      const k = Math.min(window.devicePixelRatio || 1, 2, 1.1 / Math.max(cssW / fw, cssH / fh));
+      W = Math.round(cssW * k);
+      H = Math.round(cssH * k);
       if (canvas.width !== W || canvas.height !== H) {
         canvas.width = W;
         canvas.height = H;
@@ -175,7 +182,6 @@ export default function FlyThrough({ hero, chapters }: Props) {
           b.height = Math.max(1, Math.round(H / 3));
         }
       }
-      const v = pickVariant();
       if (v !== variant) {
         variant = v;
         store.destroy();
@@ -195,13 +201,29 @@ export default function FlyThrough({ hero, chapters }: Props) {
     const positionOf = (s: Sample) =>
       s.kind === "clip" ? s.frame : s.t < 0.5 ? s.fromFrame : s.toFrame;
 
-    const draw = (s: Sample) => {
-      ctx.fillStyle = "#00291b";
-      ctx.fillRect(0, 0, W, H);
+    /** Draws sample s. Returns false if nothing was ready (the canvas keeps its last image). */
+    const draw = (s: Sample): boolean => {
       if (s.kind === "clip") {
+        // Blend the two neighbouring frames by the fractional position, so clips
+        // sampled at a low frame rate still move smoothly when scrolled slowly.
+        const i0 = Math.floor(s.frame);
+        const a = s.frame - i0;
+        const f0 = store.exact(i0);
+        const f1 = a > 0.04 ? store.exact(i0 + 1) : null;
+        if (f0 && (f1 || a <= 0.04)) {
+          store.stats.exact++;
+          drawCover(ctx, f0, W, H);
+          if (f1) {
+            ctx.globalAlpha = a;
+            drawCover(ctx, f1, W, H);
+            ctx.globalAlpha = 1;
+          }
+          return true;
+        }
         const img = store.get(s.frame);
-        if (img) drawCover(ctx, img, W, H);
-        return;
+        if (!img) return false;
+        drawCover(ctx, img, W, H);
+        return true;
       }
       // Directional whip: the transition continues the outgoing shot's own camera
       // move (pan, rise or push-in), accelerating into a motion blur; the next shot
@@ -210,6 +232,9 @@ export default function FlyThrough({ hero, chapters }: Props) {
       const d = directionFor(s.from, s.to, variant, W, H);
       const out = store.get(s.fromFrame);
       const inn = store.get(s.toFrame);
+      if (!out && !inn) return false;
+      ctx.fillStyle = "#00291b";
+      ctx.fillRect(0, 0, W, H);
       const mix = smoothstep(0.38, 0.62, tau);
       // How fast each layer is moving (0 → 1), which sets how blurred it looks.
       const blurOut = smoothstep(0.08, 0.55, tau * 2);
@@ -235,6 +260,7 @@ export default function FlyThrough({ hero, chapters }: Props) {
         }
       }
       ctx.globalAlpha = 1;
+      return true;
     };
 
     const updateOverlays = (u: number, s: Sample) => {
@@ -287,9 +313,10 @@ export default function FlyThrough({ hero, chapters }: Props) {
       dirty = false;
       const s = sample(segments, current);
       store.setPosition(positionOf(s));
-      draw(s);
+      if (!draw(s)) dirty = true; // retry next frame; the last image stays on screen
       updateOverlays(current, s);
       canvas.dataset.ready = "1";
+      if (debug) (window as unknown as { __ft: unknown }).__ft = { stats: store.stats, current, target };
     };
 
     // Chapter stops (document scroll positions): the hero, each chapter where its
@@ -312,6 +339,12 @@ export default function FlyThrough({ hero, chapters }: Props) {
     };
     const detachSnap = attachChapterSnap({
       stops,
+      // Decode the frames a glide will land on first, so the stop is sharp.
+      onGlide: (y) => {
+        const span = track.offsetHeight - window.innerHeight;
+        const u = Math.max(0, Math.min(units, ((y - trackTop()) / span) * units));
+        store.hint(positionOf(sample(segments, u)));
+      },
       inZone: (y) => y >= trackTop() - 4 && y <= afterTrack() + 4,
     });
 

@@ -22,6 +22,8 @@ type Opts = {
   stops: () => number[];
   /** Whether a scroll position is inside the snapping zone. */
   inZone: (y: number) => boolean;
+  /** Called with the destination when a glide starts. */
+  onGlide?: (targetY: number) => void;
 };
 
 // Swipe detection (touch)
@@ -40,7 +42,7 @@ const COAST_MIN_VELOCITY = 0.02; // px/ms
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
-export function attachChapterSnap({ stops, inZone }: Opts) {
+export function attachChapterSnap({ stops, inZone, onGlide }: Opts) {
   let glideRaf = 0;
   let gliding = false;
   let glideDir = 0;
@@ -57,6 +59,7 @@ export function attachChapterSnap({ stops, inZone }: Opts) {
     const dist = target - from;
     if (Math.abs(dist) < 2) return;
     const dur = Math.min(GLIDE_MAX_MS, Math.max(GLIDE_MIN_MS, Math.abs(dist) * 0.5));
+    onGlide?.(target);
     const t0 = performance.now();
     gliding = true;
     glideDir = Math.sign(dist);

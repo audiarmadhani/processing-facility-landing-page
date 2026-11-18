@@ -8,8 +8,8 @@
   --color-sand: #e5e3de;
   --color-cherry: #b8342a;
   --color-leaf: #8fae7e;
-  --font-display: var(--font-archivo), "Noto Sans JP", system-ui, sans-serif;
-  --font-sans: var(--font-dm-sans), var(--font-noto-jp), system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
 }
 
 :root {
