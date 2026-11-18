@@ -33,12 +33,6 @@ const en = {
       body: "Ripe cherry arrives from our partner farms, is weighed and logged, and goes straight into processing.",
     },
     {
-      id: "pulping",
-      kicker: "Pulping",
-      title: "From cherry to parchment",
-      body: "Our pulpers strip the skin from each cherry, leaving the seeds in their sweet mucilage, ready for fermentation.",
-    },
-    {
       id: "fermentation",
       kicker: "Fermentation",
       title: "Where flavour is decided",

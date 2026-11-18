@@ -14,7 +14,6 @@
 export const clips = [
   { id: "highlands", landscape: "01-highlands.landscape.mp4", portrait: "01-highlands.portrait.mp4", start: 0, end: 6, fps: 15 }, // L#6 / V#6
   { id: "intake", landscape: "02-intake.landscape.mp4", portrait: "02-intake.portrait.mp4", start: 5.5, end: 12.8, fps: 12, quality: { desktop: 44, mobile: 40 } }, // L#30 / V#29
-  { id: "pulping", landscape: "03-pulping.landscape.mp4", portrait: "03-pulping.portrait.mp4", start: 0, end: 3, fps: 24 }, // L#20 / V#19
   { id: "fermentation", landscape: "04-fermentation.landscape.mp4", portrait: "04-fermentation.portrait.mp4", start: 0, end: 5, fps: 18 }, // L#18 / V#17 — the fermentation tank
   { id: "control", landscape: "04-control.landscape.mp4", portrait: "04-control.portrait.mp4", start: 0.3, end: 4.2, fps: 20 }, // L#27 / V#26
   { id: "drying-houses", landscape: "05-drying-houses.landscape.mp4", portrait: "05-drying-houses.portrait.mp4", start: 6, end: 16.8, fps: 10 }, // L#1 / V#1
